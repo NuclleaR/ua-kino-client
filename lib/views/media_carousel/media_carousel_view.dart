@@ -7,12 +7,12 @@ import 'package:uakino/models/media/media_carousel.dart';
 import 'package:uakino/utils/keyboard.dart';
 import 'package:uakino/views/media_item_view/media_item_view.dart';
 
+var _focusMenuOnNext = false;
+
 class MediaCarouselView extends StatelessWidget {
   final MediaCarousel data;
 
-  MediaCarouselView({Key? key, required this.data}) : super(key: key);
-
-  var _focusMenuOnNext = false;
+  const MediaCarouselView({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

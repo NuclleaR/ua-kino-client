@@ -10,7 +10,6 @@ import 'package:uakino/scaffold_getx.dart';
 import 'package:uakino/translations/messages.dart';
 
 void main() {
-  ScaffoldGetx.init();
   runApp(const MyApp());
 }
 
@@ -27,17 +26,26 @@ class MyApp extends StatelessWidget {
         LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
       },
       child: GetMaterialApp(
-        title: 'Flutter Demo',
         translations: Messages(),
         locale: const Locale('ua', 'UA'),
         fallbackLocale: const Locale('en', 'US'),
         // defaultTransition: Transition.fade,
-        initialBinding: AppBindings(),
+        initialBinding: AppBinding(),
         initialRoute: homeRoute,
         getPages: [
-          GetPage(name: homeRoute, page: () => const HomePage()),
-          GetPage(name: mediaItemRoute, page: () => MediaPage()),
-          GetPage(name: gridRoute, page: () => const GridPage()),
+          GetPage(
+            name: homeRoute,
+            page: () => const HomePage(),
+          ),
+          GetPage(
+            name: gridRoute,
+            page: () => const GridPage(),
+          ),
+          GetPage(
+            name: mediaItemRoute,
+            page: () => const MediaPage(),
+            binding: MediaResourceBinding(),
+          ),
         ],
         // theme: ThemeData(
         //   // This is the theme of your application.
