@@ -67,11 +67,6 @@ class _MediaItemViewState extends State<MediaItemView> with TickerProviderStateM
   void _setFocused(bool value) {
     setState(() {
       _isFocused = value;
-      // if (value) {
-      //   _controller.forward();
-      // } else {
-      //   _controller.reverse();
-      // }
     });
   }
 }

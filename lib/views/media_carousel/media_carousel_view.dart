@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_carousel.dart';
 import 'package:uakino/utils/keyboard.dart';
 import 'package:uakino/views/media_item_view/media_item_view.dart';
@@ -44,13 +45,17 @@ class MediaCarouselView extends StatelessWidget {
   }
 
   Widget _buildMediaItemView(BuildContext context, int index) {
-    final isLast = data.mediaItems.last == data.mediaItems[index];
-    final isFirst = data.mediaItems.first == data.mediaItems[index];
+    final item = data.mediaItems[index];
+    final isLast = data.mediaItems.last == item;
+    final isFirst = data.mediaItems.first == item;
 
     return MediaItemView(
-      mediaItem: data.mediaItems[index],
+      mediaItem: item,
       index: index,
       onKey: (node, event) {
+        if (isSelect(event)) {
+          logger.i("Select $item");
+        }
         if (isFirst && event.logicalKey == LogicalKeyboardKey.arrowLeft) {
           if (_focusMenuOnNext && isChangeScopeToMenu(event)) {
             node.enclosingScope?.parent?.children.first.requestFocus();

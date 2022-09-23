@@ -5,8 +5,10 @@ class MediaPreviewItem {
   final String? seasonDescription;
 
   MediaPreviewItem(
-      {required this.image,
-      required this.title,
-      required this.url,
-      this.seasonDescription});
+      {required this.image, required this.title, required this.url, this.seasonDescription});
+
+  @override
+  String toString() {
+    return "MediaPreviewItem: $title";
+  }
 }

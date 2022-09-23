@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:uakino/constants.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/sidebar/menu_item.dart';
-import 'package:uakino/notifications/focus_notification.dart';
 import 'package:uakino/utils/keyboard.dart';
 import 'package:uakino/views/sidebar_view/sidebar_subitem_view.dart';
 
@@ -120,10 +119,6 @@ class _SidebarItemViewState extends State<SidebarItemView> with SingleTickerProv
     setState(() {
       _isFocused = value;
     });
-    if (value) {
-      final notification = FocusNotification(widget.key);
-      notification.dispatch(context);
-    }
   }
 
   void _handleTap() {
