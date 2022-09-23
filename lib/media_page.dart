@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uakino/views/media_content_view/media_content_view.dart';
+import 'package:uakino/models/media/media_preview_item.dart';
 
 class MediaPage extends StatelessWidget {
-  const MediaPage({Key? key}) : super(key: key);
+  final MediaPreviewItem? _mediaPreviewItem;
+
+  MediaPage({Key? key})
+      : _mediaPreviewItem = (Get.arguments is MediaPreviewItem) ? Get.arguments : null,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,15 @@ class MediaPage extends StatelessWidget {
       // appBar: AppBar(
       //   title: Obx(() => Text(controller.mediaItem.value?.title ?? "...")),
       // ),
-      body: Obx(() => MediaContentView()),
+      // body: Obx(() => MediaContentView()),
+      body: Center(
+        child: Column(
+          children: [
+            const Text("Hello from second"),
+            Text(_mediaPreviewItem?.title ?? "WTF?"),
+          ],
+        ),
+      ),
     );
   }
 }

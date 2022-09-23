@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:uakino/constants.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_carousel.dart';
 import 'package:uakino/utils/keyboard.dart';
@@ -55,6 +57,7 @@ class MediaCarouselView extends StatelessWidget {
       onKey: (node, event) {
         if (isSelect(event)) {
           logger.i("Select $item");
+          Get.toNamed(mediaItemRoute, arguments: item);
         }
         if (isFirst && event.logicalKey == LogicalKeyboardKey.arrowLeft) {
           if (_focusMenuOnNext && isChangeScopeToMenu(event)) {

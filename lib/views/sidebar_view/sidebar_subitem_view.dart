@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:uakino/constants.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/sidebar/submenu_item.dart';
@@ -43,6 +44,7 @@ class _SidebarSubItemViewState extends State<SidebarSubItemView> {
   KeyEventResult _handleKey(FocusNode node, RawKeyEvent event) {
     if (isSelect(event)) {
       logger.w("Go to ${widget.submenuItem.path}");
+      Get.toNamed(gridRoute, parameters: {"path": widget.submenuItem.path});
     }
     return KeyEventResult.ignored;
   }

@@ -23,11 +23,6 @@ class _MediaItemViewState extends State<MediaItemView> with TickerProviderStateM
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Focus(
-        // onTap: () {
-        //   print("Go to ${widget.mediaItem.url}");
-        //   // _c.setActiveMedia(withUrl: widget.mediaItem.url);
-        //   Get.to(() => MediaPage());
-        // },
         onKey: widget.onKey,
         onFocusChange: _setFocused,
         child: AnimatedScale(

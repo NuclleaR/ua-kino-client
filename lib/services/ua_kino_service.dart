@@ -20,6 +20,12 @@ class UaKinoService extends GetxService {
   final AppState _state = Get.find();
   final LibraryController _c = Get.find();
 
+  @override
+  void onInit() {
+    super.onInit();
+    getHomepageData();
+  }
+
   Future<void> getHomepageData() async {
     var response = await http.get(_getUrl());
 
@@ -62,15 +68,10 @@ class UaKinoService extends GetxService {
     var movies = movieElements.map((movieElement) {
       var a = movieElement.querySelector(_movieTitleSelector);
       return MediaPreviewItem(
-          image: _host + (movieElement
-              .querySelector("img")
-              ?.attributes["src"] ?? ""),
+          image: _host + (movieElement.querySelector("img")?.attributes["src"] ?? ""),
           title: a?.text.trim() ?? "[EMPTY]",
           url: a?.attributes["href"] ?? "",
-          seasonDescription: movieElement
-              .querySelector(_seasonSelector)
-              ?.text
-              .trim());
+          seasonDescription: movieElement.querySelector(_seasonSelector)?.text.trim());
     }).toList(growable: false);
 
     var mediaCarousel = MediaCarousel(title, movies);
