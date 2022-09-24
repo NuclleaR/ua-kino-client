@@ -10,45 +10,42 @@ class SidebarView extends GetView<AppState> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 200),
-      child: Container(
-        width: K.sidebarWidth,
-        color: Colors.blueGrey.shade900,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: Image(image: AssetImage('assets/img/logo.png')),
-            ),
-            Expanded(
-              child: FocusScope(
-                onKey: (node, event) {
-                  if (isChangeScopeToMedia(event)) {
-                    // Focus media items scope
-                    node.parent?.children.last.requestFocus();
-                    return KeyEventResult.handled;
-                  }
-                  return KeyEventResult.ignored;
-                },
-                child: Obx(
-                  () => ListView.builder(
-                      padding: const EdgeInsets.only(top: 32.0),
-                      itemCount: controller.menuItems.length,
-                      itemBuilder: (context, index) {
-                        return SidebarItemView(
-                          key: Key(controller.menuItems[index].title),
-                          menuItem: controller.menuItems[index],
-                          autofocus: controller.menuItems[index] == controller.menuItems.first,
-                        );
-                      }),
-                ),
+    return Container(
+      width: K.sidebarWidth,
+      color: Colors.blueGrey.shade900,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            child: Image(image: AssetImage('assets/img/logo.png')),
+          ),
+          Expanded(
+            child: FocusScope(
+              onKey: (node, event) {
+                if (isChangeScopeToMedia(event)) {
+                  // Focus media items scope
+                  node.parent?.children.last.requestFocus();
+                  return KeyEventResult.handled;
+                }
+                return KeyEventResult.ignored;
+              },
+              child: Obx(
+                () => ListView.builder(
+                    padding: const EdgeInsets.only(top: 32.0),
+                    itemCount: controller.menuItems.length,
+                    itemBuilder: (context, index) {
+                      return SidebarItemView(
+                        key: Key(controller.menuItems[index].title),
+                        menuItem: controller.menuItems[index],
+                        autofocus: controller.menuItems[index] == controller.menuItems.first,
+                      );
+                    }),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

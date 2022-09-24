@@ -1,14 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uakino/constants.dart';
+import 'package:uakino/controllers/app_state.dart';
 import 'package:uakino/controllers/library_controller.dart';
 import 'package:uakino/views/media_carousel/media_carousel_view.dart';
 
 class MainContentView extends GetView<LibraryController> {
-  const MainContentView({Key? key}) : super(key: key);
+  final PageController pageController = PageController(viewportFraction: 0.7);
+  final AppState appState = Get.find();
+
+  MainContentView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return Expanded(
+      child: ClipRRect(
+        child: Container(
+          color: Colors.blueGrey.shade700,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100.0,
+                child: Placeholder(
+                  color: Colors.deepOrangeAccent,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: const [Text("Hello")],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: FocusScope(
+                  child: Obx(() => PageView(
+                        controller: pageController,
+                        scrollDirection: Axis.vertical,
+                        clipBehavior: Clip.none,
+                        children: controller.carousels
+                            .map((element) => MediaCarouselView(data: element))
+                            .toList(growable: false),
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // @override
+  Widget build1(BuildContext context) {
     return Container(
       color: Colors.blueGrey.shade700,
       width: MediaQuery.of(context).size.width - K.sidebarWidth,
@@ -21,15 +62,6 @@ class MainContentView extends GetView<LibraryController> {
               children: const [Text("Hello")],
             ),
             FocusScope(
-              // onKey: (node, event) {
-              //   if (isChangeScopeToMenu(event)) {
-              //     print(node.children.length);
-              //     // Focus media items scope
-              //     // node.parent?.children.last.nextFocus();
-              //     // return KeyEventResult.handled;
-              //   }
-              //   return KeyEventResult.ignored;
-              // },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0.0),
                 child: Obx(() => Column(

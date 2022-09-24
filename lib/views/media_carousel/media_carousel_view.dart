@@ -19,7 +19,7 @@ class MediaCarouselView extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 0),
+          padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 0),
           child: Row(
             children: [
               Text(
@@ -32,7 +32,7 @@ class MediaCarouselView extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: SizedBox(
-            height: 248,
+            height: 230,
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

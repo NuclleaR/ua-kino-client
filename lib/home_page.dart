@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
       //   title: Text(title),
       // ),
       body: Row(
-        children: const [SidebarView(), MainContentView()],
+        children: [const SidebarView(), MainContentView()],
       ),
     );
   }

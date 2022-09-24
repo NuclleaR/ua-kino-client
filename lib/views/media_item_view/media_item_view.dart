@@ -29,29 +29,25 @@ class _MediaItemViewState extends State<MediaItemView> with TickerProviderStateM
           curve: Curves.easeIn,
           duration: _kScale,
           scale: _isFocused ? 1.2 : 1,
-          child: SizedBox(
-            width: 140,
-            height: 210,
-            child: Container(
-              decoration: BoxDecoration(
-                image:
-                    DecorationImage(image: NetworkImage(widget.mediaItem.image), fit: BoxFit.cover),
-              ),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Opacity(
-                    opacity: 0.7,
-                    child: Container(
-                      width: 140,
-                      padding: const EdgeInsets.all(5),
-                      color: Colors.black,
-                      child:
-                          Text(widget.mediaItem.title, style: const TextStyle(color: Colors.white)),
-                    ),
+          child: Container(
+            decoration: BoxDecoration(
+              image:
+                  DecorationImage(image: NetworkImage(widget.mediaItem.image), fit: BoxFit.cover),
+            ),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Opacity(
+                  opacity: 0.7,
+                  child: Container(
+                    width: 140,
+                    padding: const EdgeInsets.all(5),
+                    color: Colors.black,
+                    child:
+                        Text(widget.mediaItem.title, style: const TextStyle(color: Colors.white)),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
