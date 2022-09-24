@@ -21,12 +21,9 @@ class MainContentView extends GetView<LibraryController> {
             children: [
               SizedBox(
                 height: 100.0,
-                child: Placeholder(
-                  color: Colors.deepOrangeAccent,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: const [Text("Hello")],
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: const [Spacer(), Image(image: AssetImage('assets/img/logo.png'))],
                 ),
               ),
               Expanded(
