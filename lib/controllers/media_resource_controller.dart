@@ -17,8 +17,6 @@ class MediaResourceController extends GetxController with StateMixin<MediaItem> 
 
   Map<String, Source>? get playlist => _playlist.value;
 
-  // List<Source> get resources => _resources.value;
-
   @override
   void onInit() {
     super.onInit();
