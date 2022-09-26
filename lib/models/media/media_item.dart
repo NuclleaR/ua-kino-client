@@ -3,6 +3,9 @@ import 'package:uakino/ext/map_ext.dart';
 import 'package:uakino/models/media/media_info_key.dart';
 import 'package:uakino/parsers/parse_media_data.dart';
 
+typedef Source = String;
+typedef Voice = String;
+
 class MediaItem {
   // TODO for future history
   //final String ID;
@@ -10,14 +13,15 @@ class MediaItem {
   final String poster;
   final String url;
   final MediaItemInfo mediaInfo;
-  late String? source;
-  late final Map<String, List<String>>? playlists;
+  late String? rawSource;
+  late Map<Source, Voice>? rawPlaylist;
 
-  MediaItem(this.title, this.poster, this.mediaInfo, {this.playlists, this.source, this.url = ""});
+  MediaItem(this.title, this.poster, this.mediaInfo,
+      {this.rawPlaylist, this.rawSource, this.url = ""});
 
   @override
   String toString() {
-    return 'MediaItem{title: $title, poster: $poster, url: $url, mediaInfo: $mediaInfo, source: $source, playlists: $playlists}';
+    return 'MediaItem {title: $title, poster: $poster, url: $url, mediaInfo: $mediaInfo, rawSource: $rawSource, rawPlaylist: $rawPlaylist}';
   }
 }
 
@@ -37,7 +41,7 @@ class MediaItemInfo {
       this.lang, this.imdbScore, this.country, this.description);
 
   static MediaItemInfo fromHTML(Document document) {
-    Map<MediaInfoKey, String> filmInfo = MediaDataParser.parseFilmInfo(document: document);
+    Map<MediaInfoKey, String> filmInfo = MediaDataParser.parseMediaInfo(document: document);
 
     return MediaItemInfo(
         filmInfo.getString(MediaInfoKey.quality),

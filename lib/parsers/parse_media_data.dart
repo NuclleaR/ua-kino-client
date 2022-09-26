@@ -1,12 +1,12 @@
 import 'package:html/dom.dart';
-import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_carousel.dart';
 import 'package:uakino/models/media/media_info_key.dart';
+import 'package:uakino/models/media/media_item.dart';
 import 'package:uakino/models/media/media_preview_item.dart';
 import 'package:uakino/models/sidebar/menu_item.dart';
 import 'package:uakino/models/sidebar/submenu_item.dart';
 
-const String _titleSelector = ".alltitle h1";
+const String _titleSelector = "h1 .solototle";
 const String _playlistVideos = ".playlists-videos li";
 
 const String _posterSelector = ".film-poster > a";
@@ -25,6 +25,10 @@ const String _seasonSelector = ".full-season";
 const _host = "https://uakino.club";
 
 class MediaDataParser {
+  static bool isSeries({required Document document}) {
+    return document.querySelector(".movie-right .film-top-info") != null;
+  }
+
   static String? parseTitle({required Document document}) {
     return document.querySelector(_titleSelector)?.text.trim();
   }
@@ -41,32 +45,24 @@ class MediaDataParser {
 
   static String? parsePosterUrl({required Document document}) {
     var posterNode = document.querySelector(_posterSelector);
-    return posterNode?.attributes["href"];
-  }
-
-  static Map<String, String> parseSeriesInfo({required Document document}) {
-    var map = <String, String>{};
-
-    var infoListNodes = document.querySelectorAll(_seriesInfoSelector);
-
-    for (var element in infoListNodes) {
-      var key = element.querySelector(_filmInfoLabel)?.text;
-      var value = element.querySelector(_filmInfoDescription)?.text;
-
-      logger.d("key $key");
-      logger.d("key $value");
-
-      if (key != null && value != null) {
-        map[key] = value;
+    var link = posterNode?.attributes["href"];
+    if (link != null) {
+      if (link.contains("http")) {
+        return link;
       }
+      return "https://uakino.club$link";
     }
-    return map;
+    return null;
   }
 
-  static Map<MediaInfoKey, String> parseFilmInfo({required Document document}) {
+  static Map<MediaInfoKey, String> parseMediaInfo({required Document document}) {
     var map = <MediaInfoKey, String>{};
-
-    var infoListNodes = document.querySelectorAll(_filmInfoSelector);
+    List<Element> infoListNodes;
+    if (isSeries(document: document)) {
+      infoListNodes = document.querySelectorAll(_seriesInfoSelector);
+    } else {
+      infoListNodes = document.querySelectorAll(_filmInfoSelector);
+    }
 
     infoListNodes.removeLast();
 
@@ -108,6 +104,7 @@ class MediaDataParser {
             map[MediaInfoKey.duration] = value;
             break;
           case "Мова озвучення:":
+          case "Озвучення:":
             map[MediaInfoKey.lang] = value;
             break;
           case "imdb":
@@ -171,19 +168,22 @@ class MediaDataParser {
     var xfname = ajaxPlaylist.attributes["data-xfname"] ?? "";
     var newsId = ajaxPlaylist.attributes["data-news_id"] ?? "";
     return "/engine/ajax/playlists.php?news_id=$newsId}&xfield=$xfname";
-    // return Uri(
-    //     scheme: "https",
-    //     host: "uakino.club",
-    //     path: "engine/ajax/playlists.php",
-    //     queryParameters: <String, String>{"news_id": newsId, "xfield": xfname});
   }
 
-  static Map<String, List<String>> parseAjaxPlaylist({required Document document}) {
+  static Map<Source, Voice> parseAjaxPlaylist({required Document document}) {
     var list = document.querySelectorAll("li[data-file]");
-    var map = <String, List<String>>{};
+    var map = <String, String>{};
+
     for (var element in list) {
-      if (element.attributes["data-voice"] != null && element.attributes["data-file"] != null) {
-        map[element.attributes["data-voice"]!] = [element.attributes["data-file"]!];
+      var voice = element.attributes["data-voice"];
+      var src = element.attributes["data-file"];
+
+      if (voice != null && src != null) {
+        var link = element.attributes["data-file"]!;
+        if (!link.contains("http")) {
+          link = "https:$link";
+        }
+        map[link] = "$voice|${element.text}";
       }
     }
     return map;

@@ -17,3 +17,4 @@ class AppLogPrinter extends LogPrinter {
 }
 
 final logger = Logger(printer: AppLogPrinter());
+final loggerRaw = Logger();
