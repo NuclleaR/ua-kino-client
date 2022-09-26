@@ -9,6 +9,8 @@ class OopsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).errorColor;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -17,14 +19,14 @@ class OopsView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 24.0),
             child: Icon(
               Icons.error_outline,
-              color: Colors.amber.shade800,
+              color: color,
               size: 64.0,
             ),
           ),
           Text(
             message,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.amber.shade800,
+                  color: color,
                 ),
           ),
         ],

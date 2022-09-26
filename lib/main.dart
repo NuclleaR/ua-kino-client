@@ -7,6 +7,7 @@ import 'package:uakino/home_page.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/media_page.dart';
 import 'package:uakino/scaffold_getx.dart';
+import 'package:uakino/theme.dart';
 import 'package:uakino/translations/messages.dart';
 
 void main() {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
       },
       child: GetMaterialApp(
+        theme: theme,
         translations: Messages(),
         locale: const Locale('ua', 'UA'),
         fallbackLocale: const Locale('en', 'US'),

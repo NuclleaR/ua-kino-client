@@ -15,31 +15,28 @@ class MainContentView extends GetView<LibraryController> {
   Widget build(BuildContext context) {
     return Expanded(
       child: ClipRRect(
-        child: Container(
-          color: Colors.blueGrey.shade700,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 100.0,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: const [Spacer(), Image(image: AssetImage('assets/img/logo.png'))],
-                ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 100.0,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: const [Spacer(), Image(image: AssetImage('assets/img/logo.png'))],
               ),
-              Expanded(
-                child: FocusScope(
-                  child: Obx(() => PageView(
-                        controller: pageController,
-                        scrollDirection: Axis.vertical,
-                        clipBehavior: Clip.none,
-                        children: controller.carousels
-                            .map((element) => MediaCarouselView(data: element))
-                            .toList(growable: false),
-                      )),
-                ),
+            ),
+            Expanded(
+              child: FocusScope(
+                child: Obx(() => PageView(
+                      controller: pageController,
+                      scrollDirection: Axis.vertical,
+                      clipBehavior: Clip.none,
+                      children: controller.carousels
+                          .map((element) => MediaCarouselView(data: element))
+                          .toList(growable: false),
+                    )),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
