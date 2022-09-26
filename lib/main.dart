@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
           GetPage(
             name: gridRoute,
             page: () => const GridPage(),
+            binding: MediaGridBinding(),
           ),
           GetPage(
             name: mediaItemRoute,
