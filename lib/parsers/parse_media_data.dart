@@ -1,4 +1,11 @@
+import 'dart:convert';
+
+import 'package:darq/darq.dart';
+import 'package:get/get.dart';
 import 'package:html/dom.dart';
+import 'package:html/parser.dart';
+import 'package:uakino/dto/grid_response.dart';
+import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_carousel.dart';
 import 'package:uakino/models/media/media_info_key.dart';
 import 'package:uakino/models/media/media_item.dart';
@@ -18,11 +25,9 @@ const String _filmInfoDescription = ".fi-desc";
 const String _filmDescription = "div[itemprop=\"description\"]";
 
 const String _titlesSelector = ".main-section-inner > .msi-title > .sidebar-title";
-const String _movieTitleSelector = ".movie-title";
 const String _movieItemSelector = ".movie-item";
-const String _seasonSelector = ".full-season";
 
-const _host = "https://uakino.club";
+const String _paginationSelector = ".pagi-nav .navigation";
 
 class MediaDataParser {
   static bool isSeries({required Document document}) {
@@ -147,14 +152,7 @@ class MediaDataParser {
     var title = titleElement.text;
 
     var movieElements = titleElement.parent!.parent!.querySelectorAll(_movieItemSelector);
-    var movies = movieElements.map((movieElement) {
-      var a = movieElement.querySelector(_movieTitleSelector);
-      return MediaPreviewItem(
-          image: _host + (movieElement.querySelector("img")?.attributes["src"] ?? ""),
-          title: a?.text.trim() ?? "[EMPTY]",
-          url: a?.attributes["href"] ?? "",
-          seasonDescription: movieElement.querySelector(_seasonSelector)?.text.trim());
-    }).toList(growable: false);
+    var movies = movieElements.map(MediaPreviewItem.fromHTML).toList(growable: false);
 
     var mediaCarousel = MediaCarousel(title, movies);
 
@@ -187,5 +185,47 @@ class MediaDataParser {
       }
     }
     return map;
+  }
+
+  static String? parseFilmSource(Document document) {
+    var iframes = document.getElementsByTagName("iframe");
+
+    var src =
+        iframes.firstWhereOrNull((element) => element.attributes["src"] != null)?.attributes["src"];
+
+    if (src == null) {
+      logger.e("No media source");
+      return null;
+    }
+
+    return src;
+  }
+
+  static GridResponse parseGridData(String response) {
+    try {
+      var jsonData = json.decode(response);
+      var document = parse(jsonData["content"]);
+      var movieElements = document.querySelectorAll(_movieItemSelector);
+
+      var movies = movieElements.map(MediaPreviewItem.fromHTML).toList(growable: false);
+
+      var total = document
+          .querySelector(_paginationSelector)
+          ?.children
+          .lastOrDefault(defaultValue: null)
+          ?.text
+          .trim();
+
+      var pages = total != null ? int.parse(total) : 1;
+
+      return GridResponse(movies, pages);
+    } catch (e) {
+      loggerRaw.e("Error while parse resources", e);
+      return GridResponse([], 0);
+    }
+  }
+
+  static void parseFilters() {
+    // .filter-row select
   }
 }

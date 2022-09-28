@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:darq/darq.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:uakino/dto/filters.dart';
+import 'package:uakino/dto/grid_response.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_item.dart';
 import 'package:uakino/models/media/media_item_resource.dart';
@@ -32,6 +34,28 @@ class UaKinoService extends GetxService {
     }
   }
 
+  Future<GridResponse> getGridData(String path, [Filters? filters]) async {
+    try {
+      var formData = FormData.fromMap({
+        "data": (filters ?? Filters()).toString(),
+        "url": path,
+      });
+      var response = await http.post<String>("/engine/lazydev/dle_filter/ajax.php", data: formData);
+      if (response.data == null) {
+        throw "Empty response";
+      }
+
+      return compute(MediaDataParser.parseGridData, response.data!);
+    } on DioError catch (e) {
+      Get.defaultDialog(
+        onConfirm: () => {Get.back()},
+        title: "Error",
+        middleText: e.message,
+      );
+      rethrow;
+    }
+  }
+
   Future<MediaItem> getMediaData(String url) async {
     try {
       var response = await http.get<String>(url);
@@ -43,11 +67,11 @@ class UaKinoService extends GetxService {
       var mediaItem = MediaItem(title ?? "", poster, mediaInfo);
 
       var ajaxPlaylist =
-      document.getElementsByClassName("playlists-ajax").firstOrDefault(defaultValue: null);
+          document.getElementsByClassName("playlists-ajax").firstOrDefault(defaultValue: null);
       if (ajaxPlaylist != null) {
         mediaItem.rawPlaylist = await _getAjaxPlaylist(ajaxPlaylist);
       } else {
-        mediaItem.rawSource = _parseFilmSource(document);
+        mediaItem.rawSource = MediaDataParser.parseFilmSource(document);
       }
 
       return mediaItem;
@@ -98,22 +122,6 @@ class UaKinoService extends GetxService {
       loggerRaw.e(e, e, e.stackTrace);
       rethrow;
     }
-  }
-
-  String? _parseFilmSource(Document document) {
-    var iframes = document.getElementsByTagName("iframe");
-
-    var src =
-    iframes
-        .firstWhereOrNull((element) => element.attributes["src"] != null)
-        ?.attributes["src"];
-
-    if (src == null) {
-      logger.e("No media source");
-      return null;
-    }
-
-    return src;
   }
 
   Future<String?> _getMediaSourceUrl(String src) async {

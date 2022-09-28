@@ -5,3 +5,5 @@ class K {
 const homeRoute = "/";
 const mediaItemRoute = "/media-item";
 const gridRoute = "/grid";
+
+const host = "https://uakino.club";
