@@ -11,8 +11,4 @@ final theme = ThemeData(
     cardColor: Colors.blueGrey.shade800,
     errorColor: Colors.pink.shade600,
   ),
-
-  // textTheme: const TextTheme(),
-  useMaterial3: true,
-  // buttonTheme:
 );

@@ -40,7 +40,7 @@ class MediaItemInfo {
   MediaItemInfo(this.quality, this.year, this.genres, this.producer, this.actors, this.duration,
       this.lang, this.imdbScore, this.country, this.description);
 
-  static MediaItemInfo fromHTML(Document document) {
+  factory MediaItemInfo.fromHTML(Document document) {
     Map<MediaInfoKey, String> filmInfo = MediaDataParser.parseMediaInfo(document: document);
 
     return MediaItemInfo(

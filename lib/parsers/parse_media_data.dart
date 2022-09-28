@@ -123,7 +123,7 @@ class MediaDataParser {
     return map;
   }
 
-  static Iterable<MenuItem> parseMenu({required Document document}) {
+  static Iterable<MenuItem> parseMenu(Document document) {
     return document.querySelectorAll("nav .main-menu > li").map((Element el) {
       var link = el.querySelector("a");
       var item = MenuItem(title: link?.text.trim() ?? "[DEBUG ME]");
@@ -137,7 +137,7 @@ class MediaDataParser {
     });
   }
 
-  static List<MediaCarousel> parseHomePageData({required Document document}) {
+  static List<MediaCarousel> parseHomePageData(Document document) {
     var titleNodes = document.querySelectorAll(_titlesSelector);
 
     return titleNodes.map((e) => _buildCarouselData(e)).toList(growable: false);

@@ -1,15 +1,21 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:uakino/controllers/library_controller.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/sidebar/menu_item.dart';
+import 'package:uakino/parsers/parse_media_data.dart';
+import 'package:uakino/services/ua_kino_service.dart';
 
 /// Global App UI state
 class AppState extends GetxService {
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+  final UaKinoService _service = Get.find();
 
   final _menuItems = <MenuItem>[].obs;
   final _isConnected = false.obs;
@@ -59,7 +65,16 @@ class AppState extends GetxService {
   }
 
   void _updateConnectionStatus(ConnectivityResult result) async {
+    var isConnected = result == ConnectivityResult.wifi;
     _isCheckConnect.value = false;
-    _isConnected.value = result == ConnectivityResult.wifi;
+    _isConnected.value = isConnected;
+    if (isConnected) {
+      var document = await _service.getHomepageData();
+      var menuItems = await compute(MediaDataParser.parseMenu, document);
+      updateMenuItems(menuItems);
+      var carousels = await compute(MediaDataParser.parseHomePageData, document);
+      final LibraryController c = Get.find();
+      c.updateCarousels(carousels);
+    }
   }
 }

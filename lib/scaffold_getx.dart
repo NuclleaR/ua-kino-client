@@ -8,9 +8,10 @@ import 'package:uakino/services/ua_kino_service.dart';
 class AppBinding extends Bindings {
   @override
   void dependencies() {
+    Get.put(UaKinoService());
+
     Get.put(AppState());
     Get.put(LibraryController());
-    Get.put(UaKinoService());
   }
 }
 
