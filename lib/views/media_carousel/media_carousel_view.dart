@@ -53,7 +53,6 @@ class MediaCarouselView extends StatelessWidget {
 
     return MediaItemView(
       mediaItem: item,
-      index: index,
       onKey: (node, event) {
         if (isSelect(event)) {
           logger.i("Select $item");

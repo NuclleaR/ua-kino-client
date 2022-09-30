@@ -35,7 +35,7 @@ class AppState extends GetxService {
   @override
   void onInit() {
     super.onInit();
-    _initConnectivity();
+    // _initConnectivity();
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
@@ -68,6 +68,9 @@ class AppState extends GetxService {
     var isConnected = result == ConnectivityResult.wifi;
     _isCheckConnect.value = false;
     _isConnected.value = isConnected;
+
+    logger.i("isConnected $isConnected");
+
     if (isConnected) {
       var document = await _service.getHomepageData();
       var menuItems = await compute(MediaDataParser.parseMenu, document);

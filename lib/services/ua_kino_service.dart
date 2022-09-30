@@ -18,6 +18,7 @@ class UaKinoService extends GetxService {
   final http = Dio(BaseOptions(baseUrl: "https://uakino.club"));
 
   Future<Document> getHomepageData() async {
+    logger.i("Get initial data");
     try {
       var response = await http.get<String>("/");
 
