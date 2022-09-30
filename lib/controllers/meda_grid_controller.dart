@@ -52,7 +52,7 @@ class MediaGridController extends GetxController with StateMixin<List<MediaPrevi
       }
       change(response.mediaItems, status: RxStatus.success());
     }).catchError((error) {
-      change(null, status: RxStatus.error("Something went wrong while loading media"));
+      change(null, status: RxStatus.error("Something went wrong during load media"));
     });
   }
 

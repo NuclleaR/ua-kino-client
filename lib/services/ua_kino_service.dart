@@ -83,10 +83,11 @@ class UaKinoService extends GetxService {
     }
   }
 
-  Future<GridResponse> search(String search) async {
+  Future<GridResponse> search(String search, [int page = 1]) async {
     logger.i("Search $search");
     try {
-      var response = await http.get<String>("?do=search&subaction=search&story=$search");
+      var response =
+          await http.get<String>("?do=search&subaction=search&from_page=$page&story=$search");
       return compute(MediaDataParser.parseSearchData, response.data!);
     } on DioError catch (e) {
       loggerRaw.e(e.message, e, e.stackTrace);
