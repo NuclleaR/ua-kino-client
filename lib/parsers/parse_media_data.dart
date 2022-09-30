@@ -225,6 +225,25 @@ class MediaDataParser {
     }
   }
 
+  static GridResponse parseSearchData(String response) {
+    var document = parse(response);
+
+    var movieElements = document.querySelectorAll(_movieItemSelector);
+
+    var movies = movieElements.map(MediaPreviewItem.fromHTML).toList(growable: false);
+
+    var total = document
+        .querySelector(_paginationSelector)
+        ?.children
+        .lastOrDefault(defaultValue: null)
+        ?.text
+        .trim();
+
+    var pages = total != null ? int.parse(total) : 1;
+
+    return GridResponse(movies, pages);
+  }
+
   static void parseFilters() {
     // .filter-row select
   }

@@ -83,6 +83,17 @@ class UaKinoService extends GetxService {
     }
   }
 
+  Future<GridResponse> search(String search) async {
+    logger.i("Search $search");
+    try {
+      var response = await http.get<String>("?do=search&subaction=search&story=$search");
+      return compute(MediaDataParser.parseSearchData, response.data!);
+    } on DioError catch (e) {
+      loggerRaw.e(e.message, e, e.stackTrace);
+      rethrow;
+    }
+  }
+
   Future<MediaItemResource> getMediaSource(MediaItem mediaItem) async {
     if (mediaItem.rawSource != null) {
       var sourceUrl = await _getMediaSourceUrl(mediaItem.rawSource!);
