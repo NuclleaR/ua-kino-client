@@ -1,15 +1,17 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:uakino/dto/filters.dart';
+import 'package:uakino/logger/logger.dart';
 import 'package:uakino/models/media/media_preview_item.dart';
 import 'package:uakino/services/ua_kino_service.dart';
 
 class MediaGridController extends GetxController with StateMixin<List<MediaPreviewItem>> {
+  final ScrollController scrollController = ScrollController();
   final UaKinoService _service = Get.find();
   late final String? _path;
+  int totalPages = 1;
 
-  // final _grid = <MediaPreviewItem>[].obs;
   final _page = 1.obs;
-  final _totalPages = 1.obs;
   final _filters = Filters().obs;
 
   @override
@@ -18,27 +20,58 @@ class MediaGridController extends GetxController with StateMixin<List<MediaPrevi
     change(null, status: RxStatus.loading());
     _path = Get.parameters["path"];
     if (_path != null) {
-      _service.getGridData(_path!, _filters.value).then((response) {
-        if (response.mediaItems.isEmpty) {
-          change([], status: RxStatus.empty());
-          _totalPages.value = response.totalPages;
-          return;
-        }
-        change(response.mediaItems, status: RxStatus.success());
-      }).catchError((error) {
-        change(null, status: RxStatus.error("Something went wrong while loading media"));
-      });
+      _initData();
+      scrollController.addListener(_scrollListener);
 
       _page.listen((page) {
         _filters.value = _filters.value.copyWith(page: page);
+        _fetchMoreData();
       });
     } else {
       change(null, status: RxStatus.error("Path is empty"));
     }
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+    scrollController.dispose();
+  }
+
   void updateFilters(Filters filters) {
     _page.value = 1;
     _filters.value = filters;
+  }
+
+  void _initData() {
+    _service.getGridData(_path!, _filters.value).then((response) {
+      totalPages = response.totalPages;
+      if (response.mediaItems.isEmpty) {
+        change([], status: RxStatus.empty());
+        return;
+      }
+      change(response.mediaItems, status: RxStatus.success());
+    }).catchError((error) {
+      change(null, status: RxStatus.error("Something went wrong while loading media"));
+    });
+  }
+
+  void _fetchMoreData() {
+    _service.getGridData(_path!, _filters.value).then((response) {
+      var newState = List<MediaPreviewItem>.from(state!)..addAll(response.mediaItems);
+      change(newState);
+    }).catchError((error) {
+      // TODO Handle Error
+    });
+  }
+
+  void _scrollListener() {
+    final shouldLoadMore =
+        scrollController.position.maxScrollExtent - 253 < scrollController.offset;
+    final canLoadMore = _page < totalPages;
+    if (shouldLoadMore && canLoadMore) {
+      logger.i("Load more films");
+      _page.value++;
+    }
   }
 }

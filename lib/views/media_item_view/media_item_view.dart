@@ -28,6 +28,8 @@ class _MediaItemViewState extends State<MediaItemView> with TickerProviderStateM
           duration: _kScale,
           scale: _isFocused ? 1.2 : 1,
           child: Container(
+            width: 140, // 280
+            height: 207, // 414
             decoration: BoxDecoration(
               image: widget.mediaItem.image != null
                   ? DecorationImage(

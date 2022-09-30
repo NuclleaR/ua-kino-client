@@ -32,7 +32,7 @@ class MediaCarouselView extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: SizedBox(
-            height: 230,
+            height: 223, // Height of poster + padding
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

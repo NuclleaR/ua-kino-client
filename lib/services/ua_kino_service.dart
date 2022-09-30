@@ -36,6 +36,7 @@ class UaKinoService extends GetxService {
   }
 
   Future<GridResponse> getGridData(String path, [Filters? filters]) async {
+    logger.i("Get Grid Data");
     try {
       var formData = FormData.fromMap({
         "data": (filters ?? Filters()).toString(),
