@@ -52,9 +52,9 @@ class ControlsView extends StatelessWidget {
           style: TextButton.styleFrom(foregroundColor: Colors.white),
           child: Wrap(
             spacing: 4.0,
-            children: const [
-              Icon(Icons.ondemand_video, size: 18.0),
-              Text("Watch"),
+            children: [
+              const Icon(Icons.ondemand_video, size: 18.0),
+              Text("watch".tr),
             ],
           ),
         ),
@@ -87,9 +87,9 @@ class ControlsView extends StatelessWidget {
         style: TextButton.styleFrom(foregroundColor: Colors.white),
         child: Wrap(
           spacing: 4.0,
-          children: const [
-            Icon(Icons.bookmark_add_outlined, size: 18.0),
-            Text("Add to bookmark"),
+          children: [
+            const Icon(Icons.bookmark_add_outlined, size: 18.0),
+            Text("to-bookmark".tr),
           ],
         ),
       ),

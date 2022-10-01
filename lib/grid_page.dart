@@ -36,8 +36,8 @@ class GridPage extends GetWidget<MediaGridController> {
             ],
           );
         },
-        onEmpty: const Center(
-          child: Text("Empty"),
+        onEmpty: Center(
+          child: Text("no-result".tr),
         ),
         onError: (error) => OopsView(message: error),
       ),

@@ -41,10 +41,10 @@ class SearchPage extends GetWidget<SearchController> {
                     child: TextField(
                       focusNode: controller.searchNode,
                       onChanged: controller.onSearchChange,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                        labelText: "Search",
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        labelText: "search".tr,
                         // fillColor: Colors.white,
                       ),
                     ),
@@ -77,9 +77,9 @@ class SearchPage extends GetWidget<SearchController> {
             );
           },
               onError: (error) => OopsView(message: error),
-              onEmpty: const Padding(
-                padding: EdgeInsets.only(top: 32.0),
-                child: Text("No media found"),
+              onEmpty: Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: Text("no-result".tr),
               ),
               onLoading: const Padding(
                 padding: EdgeInsets.only(top: 32.0),

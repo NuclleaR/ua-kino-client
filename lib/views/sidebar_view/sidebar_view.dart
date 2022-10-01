@@ -38,9 +38,9 @@ class SidebarView extends GetView<AppState> {
                   overlayColor: const MaterialStatePropertyAll<Color?>(Colors.transparent),
                 ),
                 child: Row(
-                  children: const [
-                    Icon(Icons.search),
-                    Text("Search"),
+                  children: [
+                    const Icon(Icons.search),
+                    Text("search".tr),
                   ],
                 ),
               ),
