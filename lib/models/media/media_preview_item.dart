@@ -1,6 +1,5 @@
 import 'package:html/dom.dart';
 import 'package:uakino/constants.dart';
-import 'package:uakino/logger/logger.dart';
 
 const String _movieTitleSelector = ".movie-title";
 const String _seasonSelector = ".full-season";
@@ -21,7 +20,6 @@ class MediaPreviewItem {
   factory MediaPreviewItem.fromHTML(Element movieElement) {
     var a = movieElement.querySelector(_movieTitleSelector);
     var src = movieElement.querySelector("img")?.attributes["src"];
-    logger.d(src);
     if (src != null && !src.contains("http")) {
       src = host + src;
     }

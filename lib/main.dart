@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           ),
           GetPage(
             name: searchRoute,
-            page: () => SearchPage(),
+            page: () => const SearchPage(),
             binding: SearchBinding(),
           ),
         ],

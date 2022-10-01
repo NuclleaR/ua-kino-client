@@ -29,6 +29,8 @@ const String _movieItemSelector = ".movie-item";
 
 const String _paginationSelector = ".pagi-nav .navigation";
 
+const String _skipPath = "top.html";
+
 class MediaDataParser {
   static bool isSeries({required Document document}) {
     return document.querySelector(".movie-right .film-top-info") != null;
@@ -129,17 +131,42 @@ class MediaDataParser {
   }
 
   static Iterable<MenuItem> parseMenu(Document document) {
-    return document.querySelectorAll("nav .main-menu > li").map((Element el) {
+    var menuItems = <MenuItem>[];
+    document.querySelectorAll("nav .main-menu > li").forEach((Element el) {
       var link = el.querySelector("a");
-      var item = MenuItem(title: link?.text.trim() ?? "[DEBUG ME]");
-      item.path = link?.attributes["href"];
+
+      assert(link != null, "Menu item should have link");
+
+      if (link!.classes.contains("nolink-menu")) {
+        return;
+      }
+
+      var item = MenuItem(title: link.text.trim());
+      item.path = link.attributes["href"];
+
+      // TODO: Implement in future
+      if (item.path != null &&
+          (item.path!.contains("anonsi") ||
+              item.path!.contains("colections") ||
+              item.path!.contains("top"))) {
+        return;
+      }
 
       el.querySelectorAll(".hidden-menu ul li a").forEach((element) {
-        item.submenus.add(SubmenuItem(
-            title: element.text.trim(), path: element.attributes["href"] ?? "[DEBUG ME]"));
+        var subMenuPath = element.attributes["href"];
+
+        assert(subMenuPath != null, "Submenu item should have path");
+
+        if (subMenuPath!.contains(_skipPath)) {
+          return;
+        }
+        item.submenus.add(SubmenuItem(title: element.text.trim(), path: subMenuPath));
       });
-      return item;
+
+      menuItems.add(item);
     });
+
+    return menuItems;
   }
 
   static List<MediaCarousel> parseHomePageData(Document document) {
@@ -242,9 +269,5 @@ class MediaDataParser {
     var pages = total != null ? int.parse(total) : 1;
 
     return GridResponse(movies, pages);
-  }
-
-  static void parseFilters() {
-    // .filter-row select
   }
 }
