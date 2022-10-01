@@ -16,6 +16,7 @@ import 'package:uakino/parsers/parse_media_data.dart';
 
 class UaKinoService extends GetxService {
   final http = Dio(BaseOptions(baseUrl: "https://uakino.club"));
+  CancelToken _cancelToken = CancelToken();
 
   Future<Document> getHomepageData() async {
     logger.i("Get initial data");
@@ -86,11 +87,19 @@ class UaKinoService extends GetxService {
   Future<GridResponse> search(String search, [int page = 1]) async {
     logger.i("Search $search");
     try {
-      var response =
-          await http.get<String>("?do=search&subaction=search&from_page=$page&story=$search");
+      _cancelToken.cancel();
+      _cancelToken = CancelToken();
+
+      var response = await http.get<String>(
+        "?do=search&subaction=search&from_page=$page&story=$search",
+        cancelToken: _cancelToken,
+      );
       return compute(MediaDataParser.parseSearchData, response.data!);
     } on DioError catch (e) {
       loggerRaw.e(e.message, e, e.stackTrace);
+      if (e.type == DioErrorType.cancel) {
+        return GridResponse([], 0);
+      }
       rethrow;
     }
   }

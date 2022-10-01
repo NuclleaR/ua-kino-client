@@ -7,6 +7,7 @@ import 'package:uakino/home_page.dart';
 import 'package:uakino/logger/logger.dart';
 import 'package:uakino/media_page.dart';
 import 'package:uakino/scaffold_getx.dart';
+import 'package:uakino/search_page.dart';
 import 'package:uakino/theme.dart';
 import 'package:uakino/translations/messages.dart';
 
@@ -48,6 +49,11 @@ class MyApp extends StatelessWidget {
             name: mediaItemRoute,
             page: () => const MediaPage(),
             binding: MediaResourceBinding(),
+          ),
+          GetPage(
+            name: searchRoute,
+            page: () => SearchPage(),
+            binding: SearchBinding(),
           ),
         ],
         // theme: ThemeData(

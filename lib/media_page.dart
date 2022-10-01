@@ -11,23 +11,20 @@ class MediaPage extends GetWidget<MediaResourceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.blueGrey,
-        child: controller.obx(
-          (state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TitleView(title: state?.title ?? ""),
-                MediaInfoLayout(
-                  controller: controller,
-                ),
-              ],
-            );
-          },
-          onError: (error) => OopsView(
-            message: error,
-          ),
+      body: controller.obx(
+        (state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TitleView(title: state?.title ?? ""),
+              MediaInfoLayout(
+                controller: controller,
+              ),
+            ],
+          );
+        },
+        onError: (error) => OopsView(
+          message: error,
         ),
       ),
     );

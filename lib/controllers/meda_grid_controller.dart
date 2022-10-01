@@ -9,7 +9,7 @@ class MediaGridController extends GetxController with StateMixin<List<MediaPrevi
   final ScrollController scrollController = ScrollController();
   final UaKinoService _service = Get.find();
   late final String? _path;
-  int totalPages = 1;
+  int _totalPages = 1;
 
   final _page = 1.obs;
   final _filters = Filters().obs;
@@ -45,7 +45,7 @@ class MediaGridController extends GetxController with StateMixin<List<MediaPrevi
 
   void _initData() {
     _service.getGridData(_path!, _filters.value).then((response) {
-      totalPages = response.totalPages;
+      _totalPages = response.totalPages;
       if (response.mediaItems.isEmpty) {
         change([], status: RxStatus.empty());
         return;
@@ -68,7 +68,7 @@ class MediaGridController extends GetxController with StateMixin<List<MediaPrevi
   void _scrollListener() {
     final shouldLoadMore =
         scrollController.position.maxScrollExtent - 253 < scrollController.offset;
-    final canLoadMore = _page < totalPages;
+    final canLoadMore = _page < _totalPages;
     if (shouldLoadMore && canLoadMore) {
       logger.i("Load more films");
       _page.value++;

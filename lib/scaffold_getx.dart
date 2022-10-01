@@ -3,6 +3,7 @@ import 'package:uakino/controllers/app_state.dart';
 import 'package:uakino/controllers/library_controller.dart';
 import 'package:uakino/controllers/meda_grid_controller.dart';
 import 'package:uakino/controllers/media_resource_controller.dart';
+import 'package:uakino/controllers/search_controller.dart';
 import 'package:uakino/services/ua_kino_service.dart';
 
 class AppBinding extends Bindings {
@@ -26,5 +27,12 @@ class MediaGridBinding extends Bindings {
   @override
   void dependencies() {
     Get.create(() => MediaGridController());
+  }
+}
+
+class SearchBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.create(() => SearchController());
   }
 }

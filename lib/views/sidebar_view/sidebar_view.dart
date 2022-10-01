@@ -13,27 +13,42 @@ class SidebarView extends GetView<AppState> {
     return Container(
       width: K.sidebarWidth,
       color: Colors.blueGrey.shade900,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-            child: Image(image: AssetImage('assets/img/logo.png')),
-          ),
-          Expanded(
-            child: FocusScope(
-              onKey: (node, event) {
-                if (isChangeScopeToMedia(event)) {
-                  // Focus media items scope
-                  node.parent?.children.last.requestFocus();
-                  return KeyEventResult.handled;
-                }
-                return KeyEventResult.ignored;
-              },
+      child: FocusScope(
+        onKey: (node, event) {
+          if (isChangeScopeToMedia(event)) {
+            // Focus media items scope
+            node.parent?.children.last.requestFocus();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 24.0, 0, 0),
+              child: TextButton(
+                onPressed: () {
+                  Get.toNamed(searchRoute);
+                },
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.resolveWith<Color?>((states) =>
+                      states.contains(MaterialState.focused) ? Colors.deepOrange : Colors.white),
+                  overlayColor: const MaterialStatePropertyAll<Color?>(Colors.transparent),
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.search),
+                    Text("Search"),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
               child: Obx(
                 () => ListView.builder(
-                    padding: const EdgeInsets.only(top: 32.0),
+                    padding: const EdgeInsets.only(top: 16.0),
                     itemCount: controller.menuItems.length,
                     itemBuilder: (context, index) {
                       return SidebarItemView(
@@ -44,8 +59,8 @@ class SidebarView extends GetView<AppState> {
                     }),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
