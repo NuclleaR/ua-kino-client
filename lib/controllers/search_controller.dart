@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:uakino/logger/logger.dart';
@@ -35,6 +36,13 @@ class SearchController extends GetxController with StateMixin<List<MediaPreviewI
     _page.listen((page) {
       _doSearch(_search.value, page);
     });
+
+    searchNode.onKey = (focusNode, event) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+        focusNode.nextFocus();
+      }
+      return KeyEventResult.ignored;
+    };
   }
 
   @override

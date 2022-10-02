@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:uakino/constants.dart';
 import 'package:uakino/controllers/search_controller.dart';
@@ -22,31 +21,14 @@ class SearchPage extends GetWidget<SearchController> {
               children: [
                 SizedBox(
                   width: 600.0,
-                  child: RawKeyboardListener(
-                    focusNode: FocusNode(),
-                    onKey: (event) {
-                      // Press down to move focus to grid
-                      if (event.runtimeType == RawKeyUpEvent &&
-                          LogicalKeyboardKey.arrowDown == event.logicalKey) {
-                        FocusScope.of(context).nextFocus();
-                        // TODO: Put search string to history here
-                        return;
-                      }
-                      // When RawKeyboardListener got focus move focus to text field
-                      if (LogicalKeyboardKey.arrowUp == event.logicalKey) {
-                        controller.searchNode;
-                        return;
-                      }
-                    },
-                    child: TextField(
-                      focusNode: controller.searchNode,
-                      onChanged: controller.onSearchChange,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        labelText: "search".tr,
-                        // fillColor: Colors.white,
-                      ),
+                  child: TextFormField(
+                    focusNode: controller.searchNode,
+                    onChanged: controller.onSearchChange,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      labelText: "search".tr,
+                      // fillColor: Colors.white,
                     ),
                   ),
                 ),
